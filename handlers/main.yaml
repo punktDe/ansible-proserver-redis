@@ -1,0 +1,12 @@
+---
+- name: Start Redis
+  service:
+    name: redis
+    state: started
+  register: redis_service_result
+
+- name: Restart Redis
+  service:
+    name: redis
+    state: restarted
+  when: not (redis_service_result is defined and redis_service_result.changed)

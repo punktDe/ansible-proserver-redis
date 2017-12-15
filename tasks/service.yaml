@@ -1,0 +1,11 @@
+---
+- name: Enable service
+  lineinfile: path="{{ item.path }}" regexp="{{ item.regexp }}" line="{{ item.line }}"
+  loop_control:
+    label: "{{ item.path }}"
+  with_items:
+    - path: /etc/rc.conf
+      regexp: "^redis_enable="
+      line: 'redis_enable="YES"'
+  notify:
+    - Start Redis
