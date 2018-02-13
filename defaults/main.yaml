@@ -1,0 +1,4 @@
+redis:
+  prefix:
+   config: /usr/local/etc
+  redis.conf: {}
