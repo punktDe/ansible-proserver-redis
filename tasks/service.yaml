@@ -1,6 +1,9 @@
----
-- name: Enable service
-  lineinfile: path="{{ item.path }}" regexp="{{ item.regexp }}" line="{{ item.line }}"
+- name: Enable Redis service
+  when: ansible_system != 'Linux'
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
   loop_control:
     label: "{{ item.path }}"
   with_items:

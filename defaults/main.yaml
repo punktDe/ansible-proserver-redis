@@ -1,4 +1,15 @@
 redis:
   prefix:
-   config: /usr/local/etc
+    config: >-
+      {%- if ansible_system == 'Linux' -%}
+        /etc/redis
+      {%- else -%}
+        /usr/local/etc
+      {%- endif -%}
+  service: >-
+    {%- if ansible_system == 'Linux' -%}
+      redis-server
+    {%- else -%}
+      redis
+    {%- endif -%}
   redis.conf: {}
