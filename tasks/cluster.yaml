@@ -1,0 +1,32 @@
+---
+- when: redis.cluster.enabled
+  block:
+
+  - name: Create cluster.conf
+    file:
+      path: /etc/redis/cluster.conf
+      state: touch
+      owner: redis
+      group: redis
+      mode: 0744
+    notify: Restart Redis
+
+  - name: Check if cluster has already been initialized
+    when: redis.cluster.initializer
+    shell: redis-cli CLUSTER NODES | wc -l
+    register: redis_cluster_nodes
+    changed_when: false
+
+  - name: Restart Redis
+    when: redis_cluster_nodes.stdout == '1'
+    throttle: 1
+    service:
+      name: redis
+      state: restarted
+
+  - name: Initialize cluster
+    when:
+      - redis.cluster.initializer
+      - redis_cluster_nodes.stdout == '1'
+    command: "redis-cli --cluster create --cluster-yes {{ groups[environment_name]|intersect(groups.redis_cluster_main)|map('extract', hostvars)|map(attribute='ansible_local.proserver.network.public_ipv4_address')|map('regex_replace', '$', ':6379')|join(' ') }}"
+
