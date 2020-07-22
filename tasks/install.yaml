@@ -1,4 +1,12 @@
+---
 - name: Install Redis
   when: ansible_distribution == 'Ubuntu'
   apt:
     name: redis-server
+
+- name: Install Redis Sentinel
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - redis.replication.sentinel
+  apt:
+    name: redis-sentinel

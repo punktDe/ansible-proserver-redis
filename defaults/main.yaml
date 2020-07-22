@@ -13,7 +13,6 @@ redis:
       redis
     {%- endif -%}
   redis.conf: {}
-  cluster:
-    enabled: no
-    initializer: no
-    sentry: no
+  replication:
+    emabled: no
+    sentinel: no
