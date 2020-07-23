@@ -13,6 +13,7 @@ redis:
       redis
     {%- endif -%}
   redis.conf: {}
+  sentinel.conf: {}
   replication:
     emabled: no
     sentinel: no
