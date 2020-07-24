@@ -15,49 +15,51 @@
 - when: redis.replication.sentinel
   block:
 
-    - name: Read Sentinel example config
-      slurp:
-        path: "{{ redis.prefix.config }}/sentinel.conf"
-      register: redis_sentinel_example_config
-      changed_when: false
+  - name: Read Sentinel example config
+    slurp:
+      path: "{{ redis.prefix.config }}/sentinel.conf"
+    register: redis_sentinel_example_config
+    changed_when: false
 
-    - name: Delete Sentinel example config
-      when: redis_sentinel_example_config.content | b64decode | regex_search('^# Example sentinel.conf')
-      file:
-        path: "{{ redis.prefix.config }}/sentinel.conf"
-        state: absent
+  - name: Delete Sentinel example config
+    when:
+      - redis_sentinel_example_config.content | b64decode | regex_search('^# Example sentinel.conf')
+    file:
+      path: "{{ redis.prefix.config }}/sentinel.conf"
+      state: absent
 
-    - name: Configure Redis Sentinel
-      blockinfile:
-        path: "{{ redis.prefix.config }}/sentinel.conf"
-        block: "{{ redis['sentinel.conf'] }}"
-        create: yes
-        owner: redis
-        group: redis
-        mode: '0644'
-      notify: Restart Redis Sentinel
+  - name: Configure Redis Sentinel
+    blockinfile:
+      path: "{{ redis.prefix.config }}/sentinel.conf"
+      block: "{{ redis['sentinel.conf'] }}"
+      create: yes
+      owner: redis
+      group: redis
+      mode: '0644'
+    notify: Restart Redis Sentinel
 
-    - name: Check if Sentinel unit is masked
-      when: ansible_distribution == 'Ubuntu'
-      command: systemctl status redis-sentinel
-      register: redis_sentinel_unit
-      changed_when: false
-      failed_when: false
+  - name: Check if Sentinel unit is masked
+    when:
+      - ansible_distribution == 'Ubuntu'
+    command: systemctl status redis-sentinel
+    register: redis_sentinel_unit
+    changed_when: false
+    failed_when: false
 
-    - name: Unmask sentinel unit to enable starting the service
-      when:
-        - ansible_distribution == 'Ubuntu'
-        - '"Loaded: masked" in redis_sentinel_unit.stdout'
-      command: systemctl unmask redis-sentinel
-      notify: Start Redis Sentinel
+  - name: Unmask sentinel unit to enable starting the service
+    when:
+      - ansible_distribution == 'Ubuntu'
+      - '"Loaded: masked" in redis_sentinel_unit.stdout'
+    command: systemctl unmask redis-sentinel
+    notify: Start Redis Sentinel
 
-    - name: Start Sentinel
-      # This was necessary because otherwise the service
-      # was not started, although it should have been
-      when:
-        - ansible_distribution == 'Ubuntu'
-      when: '"Active: inactive (dead)" in redis_sentinel_unit.stdout'
-      service:
-        name: redis-sentinel
-        state: started
+  - name: Start Sentinel
+    # This was necessary because otherwise the service
+    # was not started, although it should have been
+    when:
+      - ansible_distribution == 'Ubuntu'
+      - '"Active: inactive (dead)" in redis_sentinel_unit.stdout'
+    service:
+      name: redis-sentinel
+      state: started
 
