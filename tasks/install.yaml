@@ -9,16 +9,13 @@
     - ansible_distribution == 'Ubuntu'
   block:
 
-    - name: Check for Sentinel Unit
-      stat:
-        path: /lib/systemd/system/redis-sentinel.service
-      register: redis_sentinel_unit
-      changed_when: false
-
-    - name: Mask Sentinel Unit tp prevent Sentinel from starting directly after installation
-      when: not redis_sentinel_unit.stat.exists
-      command: systemctl mask redis-sentinel
-
     - name: Install Redis Sentinel
       apt:
         name: redis-sentinel
+      register: redis_sentinel_service_result
+
+    - name: Stop Redis Sentinel
+      when: redis_sentinel_service_result.changed
+      service:
+        name: redis-sentinel
+        state: stopped
