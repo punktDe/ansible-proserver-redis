@@ -14,8 +14,8 @@
 
   - name: Configure Redis Sentinel
     when:
-      - item.value is not none
       - redis.replication.sentinel
+      - item.value is not none
     lineinfile:
       path: "{{ config_filepath }}"
       regexp: "^{{ item.key }}[\\s\\t]+"
