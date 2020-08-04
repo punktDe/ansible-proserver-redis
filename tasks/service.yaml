@@ -1,14 +1,11 @@
 - name: Enable Redis service
-  when: ansible_system != 'Linux'
-  lineinfile:
-    path: "{{ item.path }}"
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  loop_control:
-    label: "{{ item.path }}"
-  with_items:
-    - path: /etc/rc.conf
-      regexp: "^redis_enable="
-      line: 'redis_enable="YES"'
-  notify:
-    - Start Redis
+  service:
+    name: redis
+    enabled: yes
+
+
+- name: Enable Redis sentinel
+  when: ansible_system == 'Linux'
+  service:
+    name: redis-sentinel
+    enabled: yes
