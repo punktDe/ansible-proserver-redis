@@ -12,7 +12,6 @@
     - name: Install Redis Sentinel
       apt:
         name: redis-sentinel
-      register: redis_sentinel_service_result
 
     - name: Stop Redis Sentinel
       when: redis_sentinel_service_result.changed

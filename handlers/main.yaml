@@ -15,7 +15,6 @@
   service:
     name: redis
     state: started
-  register: redis_sentinel_service_result
 
 - name: Restart Redis Sentinel
   service:
