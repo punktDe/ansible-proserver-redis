@@ -4,7 +4,7 @@ Ansible role to configure Redis on a proServer.
 
 ## Requirements
 
-- A proServer
+- A proServer or a Linux Box (Ubuntu)
 - Ansible >=2.4.0
 - Ansible option `hash_behaviour` set to `merge`
 
@@ -36,3 +36,7 @@ redis:
   redis.conf:
     databases: 64
 ```
+
+## Replication
+
+For a documentation how to use replication with multiple nodes, see [REPLICATION.md](documentation/REPLICATION.md)
