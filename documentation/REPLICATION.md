@@ -3,7 +3,7 @@
 There are two different kinds of clustering concepts possible with Redis, this one only covers [replication](https://redis.io/topics/replication) (One leader, multiple followers). 
 Redis [Cluster](https://redis.io/topics/cluster-spec) (multiple leaders, multiple followers) is not possible with this role yet.
 
-In order to set up replication, without the danger of a split brain scenario, at least three different boxes are neccessary, each one running an instance of Redis server and an instance of Redis Sentinel.
+In order to set up replication, without the danger of a split brain scenario, at least three different boxes are necessary, each one running an instance of Redis server and an instance of Redis Sentinel.
 
 This role can only use Redis Sentinel on Linux (Ubuntu), because it is not yet possible to run Redis Sentinel as a service with rc-scripts on FreeBSD. 
 
@@ -99,7 +99,7 @@ redis:
 
 ### Configuring Sentinel
 
-For a Sentinel to moniter a relpication leader and its followers as well as communicating with other sentinels, some configuration options have to set.
+For a Sentinel to monitor a replication leader and its followers as well as communicating with other sentinels, some configuration options have to set.
 A sentinel will connect with the leader and publish/subscribe to a special key, on which other sentinels are subscribed as well. 
 Afterwards the sentinels will communicate in a peer-to-peer protocol.
 To configure leader's replica followers is optional, because of autodiscovery features. 
@@ -117,7 +117,7 @@ redis:
                                               # that has to be used
                                               # for settings regarding this group
                                               # adapt to leader's ip-address & port 
-                                              # and the respective quoorum
+                                              # and the respective quorum
     "sentinel auth-pass leader": secret # Set this if a password has been defined
     "sentinel down-after-milliseconds": "leader 60000"
     "sentinel failover-timeout": "leader 180000"
