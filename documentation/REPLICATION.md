@@ -65,6 +65,10 @@ node3
 
 Due to compatibility reasons they still are called "slave" or "replica" in Redis terms.
 
+#### Configuration
+
+A follower has to have its leader configured
+
 ```yaml
 redis:
   redis.conf:
