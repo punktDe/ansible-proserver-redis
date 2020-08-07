@@ -7,16 +7,6 @@ In order to set up replication, without the danger of a split brain scenario, at
 
 This role can only use Redis Sentinel on Linux (Ubuntu), because it is not yet possible to run Redis Sentinel as a service with rc-scripts on FreeBSD. 
 
-## Enabling replication
-
-For enabling replication on a node, the variable `redis.replication.enabled` has to be set to a "true" boolean state; e.g.:
-
-```yaml
-redis:
-  replication:
-    enabled: yes
-```
-
 ### Configuration
 
 There are a few configuration options that have to be set on all the nodes in a replication setup in order to enable clients' access:    
