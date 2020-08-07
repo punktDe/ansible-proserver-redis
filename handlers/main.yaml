@@ -1,4 +1,3 @@
----
 - name: Start Redis
   service:
     name: redis
