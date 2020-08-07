@@ -11,11 +11,6 @@
     state: restarted
   when: not (redis_service_result is defined and redis_service_result.changed)
 
-- name: Start Redis Sentinel
-  service:
-    name: redis
-    state: started
-
 - name: Restart Redis Sentinel
   service:
     name: redis-sentinel
