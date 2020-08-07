@@ -18,7 +18,6 @@ git submodule add https://github.com/punktDe/proserver-ansible-redis.git roles/r
 ```
 
 ```yaml
----
 - name: redis
   hosts: all
   become: yes
@@ -31,7 +30,6 @@ git submodule add https://github.com/punktDe/proserver-ansible-redis.git roles/r
 [List of available redis.conf options](https://raw.githubusercontent.com/antirez/redis/unstable/redis.conf)
 
 ```yaml
----
 redis:
   redis.conf:
     databases: 64
