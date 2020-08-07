@@ -1,4 +1,3 @@
----
 - name: Start Redis
   service:
     name: redis
@@ -10,3 +9,8 @@
     name: redis
     state: restarted
   when: not (redis_service_result is defined and redis_service_result.changed)
+
+- name: Restart Redis Sentinel
+  service:
+    name: redis-sentinel
+    state: restarted

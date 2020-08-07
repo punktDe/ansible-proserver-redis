@@ -1,13 +1,29 @@
----
 - name: Configure Redis
-  lineinfile:
-    path: "{{ config_filepath }}"
-    regexp: "^{{ item.key }}[\\s\\t]+"
-    line: "{{ item.key }} {{ item.value }}"
-  when: item.value is not none
-  loop_control:
-    label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
-  with_dict: "{{ redis['redis.conf'] }}"
   vars:
     config_filepath: "{{ redis.prefix.config }}/redis.conf"
+  when: item.value is not none
+  loop: "{{ redis['redis.conf']|dict2items }}"
+  loop_control:
+    label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
+  lineinfile:
+    path: "{{ config_filepath }}"
+    regexp: "^{{ item.key }}[\\s\\t]"
+    line: "{{ item.key }} {{ item.value }}"
+    state: "{{ 'present' if item.value else 'absent' }}"
   notify: Restart Redis
+
+- name: Configure Redis Sentinel
+  vars:
+    config_filepath: "{{ redis.prefix.config }}/sentinel.conf"
+  when:
+    - redis.replication.sentinel
+    - item.value is not none
+  loop: "{{ redis['sentinel.conf']|dict2items }}"
+  loop_control:
+    label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
+  lineinfile:
+    path: "{{ config_filepath }}"
+    regexp: "^{{ item.key }}[\\s\\t]"
+    line: "{{ item.key }} {{ item.value }}"
+    state: "{{ 'present' if item.value else 'absent' }}"
+  notify: Restart Redis Sentinel

@@ -1,0 +1,18 @@
+- when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Install Redis
+      apt:
+        name: redis-server
+
+    - when: redis.replication.sentinel
+      block:
+        - name: Install Redis Sentinel
+          apt:
+            name: redis-sentinel
+          register: redis_install_sentinel_apt_result
+
+        - name: Stop Redis Sentinel
+          when: redis_install_sentinel_apt_result.changed
+          service:
+            name: redis-sentinel
+            state: stopped
