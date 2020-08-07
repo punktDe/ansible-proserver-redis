@@ -3,7 +3,6 @@
   when: ansible_distribution == 'Ubuntu'
   apt:
     name: redis-server
-  register: redis_sentinel_service_result
 
 - when:
     - redis.replication.sentinel
@@ -13,6 +12,7 @@
     - name: Install Redis Sentinel
       apt:
         name: redis-sentinel
+      register: redis_sentinel_service_result
 
     - name: Stop Redis Sentinel
       when: redis_sentinel_service_result.changed
