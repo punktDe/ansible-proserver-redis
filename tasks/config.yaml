@@ -12,17 +12,17 @@
     config_filepath: "{{ redis.prefix.config }}/redis.conf"
   notify: Restart Redis
 
-  - name: Configure Redis Sentinel
-    when:
-      - redis.replication.sentinel
-      - item.value is not none
-    lineinfile:
-      path: "{{ config_filepath }}"
-      regexp: "^{{ item.key }}[\\s\\t]+"
-      line: "{{ item.key }} {{ item.value }}"
-    loop_control:
-      label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
-    loop: "{{ redis['sentinel.conf'] | dict2items }}"
-    vars:
-      config_filepath: "{{ redis.prefix.config }}/sentinel.conf"
-    notify: Restart Redis Sentinel
+- name: Configure Redis Sentinel
+  when:
+    - redis.replication.sentinel
+    - item.value is not none
+  lineinfile:
+    path: "{{ config_filepath }}"
+    regexp: "^{{ item.key }}[\\s\\t]+"
+    line: "{{ item.key }} {{ item.value }}"
+  loop_control:
+    label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
+  loop: "{{ redis['sentinel.conf'] | dict2items }}"
+  vars:
+    config_filepath: "{{ redis.prefix.config }}/sentinel.conf"
+  notify: Restart Redis Sentinel

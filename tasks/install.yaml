@@ -1,12 +1,13 @@
 ---
 - name: Install Redis
-  when: ansible_distribution == 'ubuntu'
+  when: ansible_distribution == 'Ubuntu'
   apt:
     name: redis-server
+  register: redis_sentinel_service_result
 
 - when:
     - redis.replication.sentinel
-    - ansible_distribution == 'ubuntu'
+    - ansible_distribution == 'Ubuntu'
   block:
 
     - name: Install Redis Sentinel
