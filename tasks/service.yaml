@@ -3,7 +3,7 @@
     name: redis
     enabled: yes
 
-- name: Enable Redis sentinel
+- name: Enable Redis Sentinel
   when:
     - ansible_system == 'Linux'
     - redis.replication.sentinel
