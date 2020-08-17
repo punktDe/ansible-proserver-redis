@@ -1,7 +1,6 @@
 - name: Configure Redis
   vars:
     config_filepath: "{{ redis.prefix.config }}/redis.conf"
-  when: item.value is not none
   loop: "{{ redis['redis.conf']|dict2items }}"
   loop_control:
     label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
@@ -15,9 +14,7 @@
 - name: Configure Redis Sentinel
   vars:
     config_filepath: "{{ redis.prefix.config }}/sentinel.conf"
-  when:
-    - redis.replication.sentinel
-    - item.value is not none
+  when: redis.replication.sentinel
   loop: "{{ redis['sentinel.conf']|dict2items }}"
   loop_control:
     label: "{{ config_filepath }} {{ item.key }}={{ item.value }}"
