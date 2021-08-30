@@ -1,6 +1,6 @@
 - name: Enable Redis service
   service:
-    name: redis
+    name: "{{ redis.service.server }}"
     enabled: yes
 
 - name: Enable Redis Sentinel
@@ -8,5 +8,5 @@
     - ansible_system == 'Linux'
     - redis.replication.sentinel
   service:
-    name: redis-sentinel
+    name: "{{ redis.service.sentinel }}"
     enabled: yes

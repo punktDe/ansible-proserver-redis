@@ -6,13 +6,21 @@ redis:
       {%- else -%}
         /usr/local/etc
       {%- endif -%}
-  service: >-
-    {%- if ansible_system == 'Linux' -%}
-      redis-server
-    {%- else -%}
-      redis
-    {%- endif -%}
+  service:
+    server: >-
+      {%- if ansible_system == 'Linux' -%}
+        redis-server
+      {%- else -%}
+        redis
+      {%- endif -%}
+    sentinel: redis-sentinel
   redis.conf: {}
   sentinel.conf: {}
   replication:
     sentinel: no
+  repository:
+    apt:
+      #key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60A0586666DE0BA4B481628ACC59E6B43FA6E3CA
+      key_url:
+      #repository: "deb http://ppa.launchpad.net/redislabs/redis/ubuntu {{ ansible_distribution_release }} main"
+      repository:

@@ -1,5 +1,29 @@
 - when: ansible_distribution == 'Ubuntu'
   block:
+    - when: redis.repository.apt.repository
+      block:
+        - name: Install GPG
+          apt:
+            name: gpg
+
+        - name: Add Redis repository key
+          apt_key:
+            url: "{{ redis.repository.apt.key_url }}"
+
+        - name: Add Redis repository
+          loop:
+            - /etc/apt/sources.list.d/redis.list
+          copy:
+            content: |
+              {{ redis.repository.apt.repository }}
+            dest: "{{ item }}"
+          register: redis_add_apt_repository
+
+        - name: Update apt cache
+          apt:
+            update_cache: yes
+          when: redis_add_apt_repository.changed
+
     - name: Install Redis
       apt:
         name: redis-server
@@ -14,5 +38,5 @@
         - name: Stop Redis Sentinel
           when: redis_install_sentinel_apt_result.changed
           service:
-            name: redis-sentinel
+            name: "{{ redis.service.sentinel }}"
             state: stopped

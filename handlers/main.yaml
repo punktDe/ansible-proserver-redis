@@ -1,16 +1,16 @@
 - name: Start Redis
   service:
-    name: redis
+    name: "{{ redis.service.server }}"
     state: started
   register: redis_service_result
 
 - name: Restart Redis
   service:
-    name: redis
+    name: "{{ redis.service.server }}"
     state: restarted
   when: not (redis_service_result is defined and redis_service_result.changed)
 
 - name: Restart Redis Sentinel
   service:
-    name: redis-sentinel
+    name: "{{ redis.service.sentinel }}"
     state: restarted
