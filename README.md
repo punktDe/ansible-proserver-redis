@@ -4,7 +4,7 @@ Ansible role to configure Redis on a proServer.
 
 ## Requirements
 
-- proServer or Ubuntu Linux
+- proServer or Debian/Ubuntu Linux
 - Ansible >=2.9.0
 - Ansible option `hash_behaviour` set to `merge`
 
