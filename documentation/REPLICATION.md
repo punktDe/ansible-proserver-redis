@@ -5,7 +5,7 @@ Redis [Cluster](https://redis.io/topics/cluster-spec) (multiple leaders, multipl
 
 In order to set up replication, without the danger of a split brain scenario, at least three different boxes are necessary, each one running an instance of Redis server and an instance of Redis Sentinel.
 
-This role can only use Redis Sentinel on Linux (Ubuntu), because it is not yet possible to run Redis Sentinel as a service with rc-scripts on FreeBSD. 
+This role can only use Redis Sentinel on Linux (Ubuntu/Debian), because it is not yet possible to run Redis Sentinel as a service with rc-scripts on FreeBSD. 
 
 ### Configuration
 
